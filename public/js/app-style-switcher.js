@@ -7,8 +7,8 @@ $(function() {
     function handlenavbarbg() {
         if ( $('#main-wrapper').attr('data-navbarbg') == 'skin6' ) {
             // do this
-            $(".topbar .navbar").addClass('navbar-light');
-            $(".topbar .navbar").removeClass('navbar-dark');
+            $(".topbar .navbar").addClass('navbar-dark');
+            $(".topbar .navbar").removeClass('navbar-light');
         } else {
             // do that    
         }    

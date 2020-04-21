@@ -12,7 +12,7 @@ class Topbar extends React.Component {
                         </h4>
                         
                     </a>
-                    <a className="nav-toggler waves-effect waves-light d-block d-md-none" href="javascript:void(0)">
+                    <a className="nav-toggler waves-effect waves-light d-block d-md-none" >
 					<i className="ti-menu ti-close"></i></a>
                 </div>
             </nav>

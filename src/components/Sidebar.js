@@ -1,4 +1,6 @@
 import React from 'react';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
+import { faTachometerAlt} from '@fortawesome/free-solid-svg-icons'
 
 class Sidebar extends React.Component {
     render(){
@@ -21,7 +23,7 @@ class Sidebar extends React.Component {
                         <li className="sidebar-item"> 
                             <a className="sidebar-link waves-effect waves-dark sidebar-link" 
                                 href="/" aria-expanded="false">
-                                <i className="mdi mdi-view-dashboard"></i><span className="hide-menu">
+                                <FontAwesomeIcon icon={faTachometerAlt} /> <span className="pl-2 hide-menu">
                                     Dashboard</span>
                             </a>
                         </li>

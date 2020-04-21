@@ -8934,6 +8934,21 @@ Notify
 /*******************
  General Topbar
 *******************/
+.blink {
+  animation: blink-animation 1s steps(5, start) infinite;
+  -webkit-animation: blink-animation 1s steps(5, start) infinite;
+}
+@keyframes blink-animation {
+  to {
+    visibility: hidden;
+  }
+}
+@-webkit-keyframes blink-animation {
+  to {
+    visibility: hidden;
+  }
+}
+
 .topbar {
   position: relative;
   z-index: 50;
@@ -12842,7 +12857,7 @@ Padding margin property
 *******************/
 .campaign {
   position: relative;
-  height: 250px; }
+  height: 350px; }
   .campaign .ct-series-a .ct-area {
     fill-opacity: 0.2;
     fill: url(#gradient); }
