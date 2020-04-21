@@ -24,7 +24,7 @@ class Dashboard extends React.Component {
 
         this._interval = setInterval(() => {
             this.getDataFromApi();
-          }, 10000);
+          }, 2000);
         
     }
 
@@ -35,8 +35,14 @@ class Dashboard extends React.Component {
             let labels = [];
             let co2 = [];
             let smoke = [];
+            console.log(result.data.log);
+            let dataarray = result.data.log;
+            if(dataarray.length > 10){
+                dataarray =  dataarray.slice(Math.max(dataarray.length - 10 , 0))
+            }
+            console.log(dataarray.length);
 
-            result.data.log.forEach( item => {
+            dataarray.forEach( item => {
                 labels.push(moment(item.datetime).format('HH:mm:ss') );
                 co2.push(item.average_co2);
                 smoke.push(item.average_smoke);
@@ -48,7 +54,6 @@ class Dashboard extends React.Component {
                 co2 : co2 , 
                 smoke : smoke 
             });
-             console.log( result.data.log);
         })
         .catch( err => {
             console.log(err);
@@ -60,7 +65,7 @@ class Dashboard extends React.Component {
       }
 
     render(){
-        const {sensors , log } = this.state;
+        const {sensors , labels , co2 , smoke } = this.state;
         return(
             <>
             <Topbar/>
@@ -95,7 +100,23 @@ class Dashboard extends React.Component {
                                         
                                         <div className="col-lg-12">
                                             <div className="campaign ct-charts">
-                                            <LineChart data={data}
+                                            <LineChart data={{
+                                                labels:labels ,
+                                                datasets:[
+                                                   {
+                                                     label : "Co2",
+                                                     backgroundColor: 'rgba(41,98,255,0.15)',
+                                                     borderColor: 'rgba(41,98,255,0.4)',
+                                                     data : co2
+                                                   },
+                                                   {
+                                                    label : "Smoke",
+                                                    backgroundColor: 'rgba(116,96,238,0.15)',
+                                                    borderColor: 'rgba(116,96,238,0.4)',
+                                                    data : smoke
+                                                   } 
+                                                ]
+                                            }}
                                             options={options}
                                             width="600" height="250"/>
                                             </div>
@@ -210,23 +231,12 @@ class Dashboard extends React.Component {
 
 }
 
-const data = {
-    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-    datasets: [
-      {
-       
-        data: [65, 59, 80, 81, 56, 55, 40],
-      },
-      {
-        data: [28, 48, 40, 19, 86, 27, 90],
-      },
-    ]
-}
+
 
 const options = {
-    scaleShowGridLines: true,
+    scaleShowGridLines: false,
     scaleGridLineColor: 'rgba(0,0,0,.05)',
-    scaleGridLineWidth: 1,
+    scaleGridLineWidth: 0,
     scaleShowHorizontalLines: true,
     scaleShowVerticalLines: true,
     bezierCurve: true,
@@ -238,6 +248,21 @@ const options = {
     datasetStroke: true,
     datasetStrokeWidth: 2,
     datasetFill: true,
+    legend: {
+        display: false
+     },
+    scales: {
+        xAxes: [{
+            gridLines: {
+                display:false
+            }
+        }],
+        yAxes: [{
+            gridLines: {
+                display:false
+            }   
+        }]
+    }
  }
 
 export default Dashboard;
