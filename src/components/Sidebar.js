@@ -26,6 +26,16 @@ class Sidebar extends React.Component {
                                 <FontAwesomeIcon icon={faTachometerAlt} /> <span className="pl-2 hide-menu">
                                     Dashboard</span>
                             </a>
+                            <a className="sidebar-link waves-effect waves-dark sidebar-link" 
+                                href="/" aria-expanded="false">
+                                <FontAwesomeIcon icon={faTachometerAlt} /> <span className="pl-2 hide-menu">
+                                    Sensors</span>
+                            </a>
+                            <a className="sidebar-link waves-effect waves-dark sidebar-link" 
+                                href="/" aria-expanded="false">
+                                <FontAwesomeIcon icon={faTachometerAlt} /> <span className="pl-2 hide-menu">
+                                    Admins</span>
+                            </a>
                         </li>
                     </ul>      
                 </nav>
