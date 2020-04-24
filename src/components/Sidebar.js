@@ -8,7 +8,7 @@ class Sidebar extends React.Component {
             <aside className="left-sidebar" data-sidebarbg="skin6">
                 <div className="scroll-sidebar">
                 <nav className="sidebar-nav">
-                    <ul id="sidebarnav">
+                    <ul id="sidebarnav" className="px-2">
                         <li>
                             <div className="user-profile d-flex no-block dropdown m-t-20">
                                 <div className="user-pic">

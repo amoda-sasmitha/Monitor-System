@@ -72,7 +72,7 @@ class Dashboard extends React.Component {
             <>
             <Topbar/>
             <Sidebar/>
-            <div className="page-wrapper ">
+            <div className="page-wrapper pt-5">
                 <div className="page-breadcrumb">
                     <div className="row align-items-center">
                         <div className="col-12">
@@ -101,7 +101,7 @@ class Dashboard extends React.Component {
                                     <div className="row">
                                         
                                         <div className="col-lg-12">
-                                            <div className="campaign ct-charts">
+                                            <div className="campaign ct-charts py-1">
                                             <LineChart data={{
                                                 labels:labels ,
                                                 datasets:[
