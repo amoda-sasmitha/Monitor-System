@@ -1,230 +1,238 @@
 import React from 'react';
 import Sidebar from '../components/Sidebar';
 import Topbar from '../components/Topbar';
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
-import { faCircle} from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faCircle } from '@fortawesome/free-solid-svg-icons'
 import axios from 'axios';
-import {Line as LineChart} from 'react-chartjs-2';
+import { Line as LineChart } from 'react-chartjs-2';
 import DATA from '../util/env'
 import moment from 'moment'
-import {Link } from "react-router-dom";
+import { Link } from "react-router-dom";
+
+import A_Admin from '../Controllers/Admin'
 
 class Dashboard extends React.Component {
 
-    constructor(props){
+    constructor(props) {
         super(props);
         this.state = {
-            loading : false,
-            sensors : [],
-            labels : [],
-            co2 : [],
-            smoke : [],
+            loading: false,
+            sensors: [],
+            labels: [],
+            co2: [],
+            smoke: [],
         }
     }
 
-    componentDidMount(){
-        this.getDataFromApi();
-        this._interval = setInterval(() => {
-            this.getDataFromApi();
-          }, 2000);
-        
+    async componentDidMount() {
+        var State = await A_Admin.checkSignedIn();
+        if (State === false) {
+
+            await window.location.replace("/");
+
+        } else {
+         await   this.getDataFromApi();
+            this._interval = await setInterval(() => {
+                this.getDataFromApi();
+            }, 2000);
+        }
     }
 
     getDataFromApi = () => {
-    axios.get(`${DATA.API}/sensors/getall/2`)
-        .then( result => {
+        axios.get(`${DATA.API}/sensors/getall/2`)
+            .then(result => {
 
-            let labels = [];
-            let co2 = [];
-            let smoke = [];
-            console.log(result.data.log);
-            let dataarray = result.data.log;
-            if(dataarray.length > 10){
-                dataarray =  dataarray.slice(Math.max(dataarray.length - 10 , 0))
-            }
-            console.log(dataarray.length);
+                let labels = [];
+                let co2 = [];
+                let smoke = [];
+                console.log(result.data.log);
+                let dataarray = result.data.log;
+                if (dataarray.length > 10) {
+                    dataarray = dataarray.slice(Math.max(dataarray.length - 10, 0))
+                }
+                console.log(dataarray.length);
 
-            dataarray.forEach( item => {
-                labels.push(moment(item.datetime).format('HH:mm:ss') );
-                co2.push(item.average_co2);
-                smoke.push(item.average_smoke);
+                dataarray.forEach(item => {
+                    labels.push(moment(item.datetime).format('HH:mm:ss'));
+                    co2.push(item.average_co2);
+                    smoke.push(item.average_smoke);
+                })
+
+                this.setState({
+                    sensors: result.data.current,
+                    labels: labels,
+                    co2: co2,
+                    smoke: smoke
+                });
             })
-
-            this.setState({
-                sensors : result.data.current ,
-                labels : labels ,
-                co2 : co2 , 
-                smoke : smoke 
-            });
-        })
-        .catch( err => {
-            console.log(err);
-        })
+            .catch(err => {
+                console.log(err);
+            })
     }
 
     componentWillUnmount() {
         clearInterval(this._interval);
-      }
+    }
 
-    render(){
-        const {sensors , labels , co2 , smoke } = this.state;
-        return(
+    render() {
+        const { sensors, labels, co2, smoke } = this.state;
+        return (
             <>
-            <Topbar/>
-            <Sidebar/>
-            <div className="page-wrapper ">
-                <div className="page-breadcrumb">
-                    <div className="row align-items-center">
-                        <div className="col-12">
-                            <h4 className="page-title">Sensors Live Data</h4>
+                <Topbar />
+                <Sidebar />
+                <div className="page-wrapper ">
+                    <div className="page-breadcrumb">
+                        <div className="row align-items-center">
+                            <div className="col-12">
+                                <h4 className="page-title">Sensors Live Data</h4>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <div className="container-fluid">
-                    <div className="row">
-                        <div className="col-md-9 rounded">
-                            <div className="card shadow-sm rounded">
-                                <div className="card-body">
-                                    <div className="d-md-flex align-items-center">
-                                        <div>
-                                            <h4 className="card-title font-weight-bold">Average Co2 & Smoke Levels</h4>
-                                            <h5 className="card-subtitle">Update every 2s</h5>
+                    <div className="container-fluid">
+                        <div className="row">
+                            <div className="col-md-9 rounded">
+                                <div className="card shadow-sm rounded">
+                                    <div className="card-body">
+                                        <div className="d-md-flex align-items-center">
+                                            <div>
+                                                <h4 className="card-title font-weight-bold">Average Co2 & Smoke Levels</h4>
+                                                <h5 className="card-subtitle">Update every 2s</h5>
+                                            </div>
+                                            <div className="ml-auto d-flex no-block align-items-center">
+                                                <ul className="list-inline font-12 dl m-r-15 m-b-0">
+                                                    <li className="list-inline-item text-info"><FontAwesomeIcon icon={faCircle} /> Co2</li>
+                                                    <li className="list-inline-item text-primary"><FontAwesomeIcon icon={faCircle} /> Heat</li>
+                                                </ul>
+                                            </div>
                                         </div>
-                                        <div className="ml-auto d-flex no-block align-items-center">
-                                            <ul className="list-inline font-12 dl m-r-15 m-b-0">
-                                                <li className="list-inline-item text-info"><FontAwesomeIcon icon={faCircle} /> Co2</li>
-                                                <li className="list-inline-item text-primary"><FontAwesomeIcon icon={faCircle} /> Heat</li>
+                                        <div className="row">
+
+                                            <div className="col-lg-12">
+                                                <div className="campaign ct-charts">
+                                                    <LineChart data={{
+                                                        labels: labels,
+                                                        datasets: [
+                                                            {
+                                                                label: "Co2",
+                                                                backgroundColor: 'rgba(41,98,255,0.15)',
+                                                                borderColor: 'rgba(41,98,255,0.4)',
+                                                                data: co2
+                                                            },
+                                                            {
+                                                                label: "Smoke",
+                                                                backgroundColor: 'rgba(116,96,238,0.15)',
+                                                                borderColor: 'rgba(116,96,238,0.4)',
+                                                                data: smoke
+                                                            }
+                                                        ]
+                                                    }}
+                                                        options={options}
+                                                        width="600" height="250" />
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="col-md-3">
+                                <div className="card  h-100 pb-3" style={{ backgroundColor: "transparent" }}>
+                                    <div className="card-body bg-white">
+                                        <h4 className="card-title">Recent Alerts</h4>
+                                        <div className="feed-widget">
+                                            <ul className="list-style-none feed-body m-0 p-b-20">
                                             </ul>
                                         </div>
                                     </div>
-                                    <div className="row">
-                                        
-                                        <div className="col-lg-12">
-                                            <div className="campaign ct-charts">
-                                            <LineChart data={{
-                                                labels:labels ,
-                                                datasets:[
-                                                   {
-                                                     label : "Co2",
-                                                     backgroundColor: 'rgba(41,98,255,0.15)',
-                                                     borderColor: 'rgba(41,98,255,0.4)',
-                                                     data : co2
-                                                   },
-                                                   {
-                                                    label : "Smoke",
-                                                    backgroundColor: 'rgba(116,96,238,0.15)',
-                                                    borderColor: 'rgba(116,96,238,0.4)',
-                                                    data : smoke
-                                                   } 
-                                                ]
-                                            }}
-                                            options={options}
-                                            width="600" height="250"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="row" >
+                            <div className="col-12">
+                                <div className="card">
+                                    <div className="card-body pb-1">
+                                        <div className="d-md-flex align-items-center">
+                                            <div>
+                                                <h4 className="card-title">Sensor Details</h4>
+                                                <h5 className="card-subtitle">Update every 30s</h5>
+                                            </div>
+                                            <div className="ml-auto">
+                                                <div className="dl">
+                                                    <select className="custom-select">
+                                                        <option value="0" selected>Co2 Max to Min</option>
+                                                        <option value="0" selected>Co2 Max to Min</option>
+                                                    </select>
+                                                </div>
                                             </div>
                                         </div>
-                                    
+                                    </div>
+                                    <div className="table-responsive">
+                                        <table className="table v-middle" id="td">
+                                            <thead>
+                                                <tr className="bg-light">
+                                                    <th className="border-top-0">Floor No</th>
+                                                    <th className="border-top-0">Room No</th>
+                                                    <th className="border-top-0">Co2 Level</th>
+                                                    <th className="border-top-0">Smoke Level</th>
+                                                    <th className="border-top-0">Status</th>
+                                                    <th className="border-top-0">Actions</th>
+                                                </tr>
+                                            </thead >
+                                            <tbody >
+                                                {sensors.map(sensor => this.renderSensorTable(sensor))}
+                                            </tbody>
+                                        </table>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div className="col-md-3">
-                            <div className="card  h-100 pb-3" style={{backgroundColor : "transparent"}}>
-                                <div className="card-body bg-white">
-                                    <h4 className="card-title">Recent Alerts</h4>
-                                    <div className="feed-widget">
-                                        <ul className="list-style-none feed-body m-0 p-b-20">
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="row" >
-                    <div className="col-12">
-                        <div className="card">
-                            <div className="card-body pb-1">
-                                <div className="d-md-flex align-items-center">
-                                    <div>
-                                        <h4 className="card-title">Sensor Details</h4>
-                                        <h5 className="card-subtitle">Update every 30s</h5>
-                                    </div>
-                                    <div className="ml-auto">
-                                        <div className="dl">
-                                            <select className="custom-select">
-                                                <option value="0" selected>Co2 Max to Min</option>
-                                               <option value="0" selected>Co2 Max to Min</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="table-responsive">
-                                <table className="table v-middle" id="td">
-                                    <thead>
-                                        <tr className="bg-light">
-                                            <th className="border-top-0">Floor No</th>
-                                            <th className="border-top-0">Room No</th>
-                                            <th className="border-top-0">Co2 Level</th>
-                                            <th className="border-top-0">Smoke Level</th>
-											<th className="border-top-0">Status</th>
-                                            <th className="border-top-0">Actions</th>
-                                        </tr>
-                                    </thead >
-                                    <tbody >
-                                        { sensors.map ( sensor => this.renderSensorTable(sensor) )}
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
                     </div>
                 </div>
-            </div>
             </>
         );
     }
 
     renderSensorTable = item => {
-        const status = (item.co2_level + item.smoke_level)/2; 
+        const status = (item.co2_level + item.smoke_level) / 2;
         return (<tr key={item.id}>
             <td>
-            <div className="d-flex align-items-center">
-                <div className="">
-                    <h4 className="m-b-0 font-16">{item.floor_id}</h4>
+                <div className="d-flex align-items-center">
+                    <div className="">
+                        <h4 className="m-b-0 font-16">{item.floor_id}</h4>
+                    </div>
                 </div>
-            </div>
-        </td>
-        <td>{item.room_id}</td>
-        <td><FontAwesomeIcon icon={faCircle} className={`text-${this.changeStyleColor(item.co2_level)} blink`}/> {item.co2_level}.00 </td>
-        <td><FontAwesomeIcon icon={faCircle} className={`text-${this.changeStyleColor(item.smoke_level)} blink`}/> {item.smoke_level}.00</td>
-        <td><span className={`btn-sm bg-light text-dark`}>{this.changestatus(status)}</span></td>
-        <td><Link to={`/sensor/${item.id}`}><span className="label bg-dark btn font-weight-bold">Details</span></Link> </td>	
-    </tr>   
-    );
+            </td>
+            <td>{item.room_id}</td>
+            <td><FontAwesomeIcon icon={faCircle} className={`text-${this.changeStyleColor(item.co2_level)} blink`} /> {item.co2_level}.00 </td>
+            <td><FontAwesomeIcon icon={faCircle} className={`text-${this.changeStyleColor(item.smoke_level)} blink`} /> {item.smoke_level}.00</td>
+            <td><span className={`btn-sm bg-light text-dark`}>{this.changestatus(status)}</span></td>
+            <td><Link to={`/sensor/${item.id}`}><span className="label bg-dark btn font-weight-bold">Details</span></Link> </td>
+        </tr>
+        );
 
     }
 
     changeStyleColor = number => {
-        if(number >= 0 && number <= 4 ){
+        if (number >= 0 && number <= 4) {
             return 'success';
-        }else if(number >= 5 && number <= 7){
+        } else if (number >= 5 && number <= 7) {
             return 'warning';
-        }else if(number >= 8 && number <= 10){
+        } else if (number >= 8 && number <= 10) {
             return 'danger';
-        }else{
+        } else {
             return 'secondary';
         }
     }
 
     changestatus = number => {
-        if(number >= 0 && number <= 4 ){
+        if (number >= 0 && number <= 4) {
             return 'Normal';
-        }else if(number >= 5 && number <= 7){
+        } else if (number >= 5 && number <= 7) {
             return 'Average';
-        }else if(number >= 8 && number <= 10){
+        } else if (number >= 8 && number <= 10) {
             return 'Danger';
-        }else{
+        } else {
             return 'None';
         }
     }
@@ -252,19 +260,19 @@ const options = {
     datasetFill: true,
     legend: {
         display: false
-     },
+    },
     scales: {
         xAxes: [{
             gridLines: {
-                display:false
+                display: false
             }
         }],
         yAxes: [{
             gridLines: {
-                display:false
-            }   
+                display: false
+            }
         }]
     }
- }
+}
 
 export default Dashboard;
