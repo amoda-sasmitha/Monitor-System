@@ -9,6 +9,8 @@ class Admin {
     constructor() {
         this.api = {
             signin: "/users/login",
+            register: "/users/register",
+            getAllAdmins: "/users/a/all"
 
         };
     }
@@ -53,6 +55,96 @@ class Admin {
         return returnObj;
     }
 
+
+
+    // ------------------------------- Register ---------------------------------------
+    // ------------------------------- Register ---------------------------------------
+    // ------------------------------- Register ---------------------------------------
+    // ------------------------------- Register ---------------------------------------
+
+    async registerAdmin(Admin) {
+        var requestData = {
+            admin: Admin
+        };
+        // var for store respose
+        var resp = 600;
+        var data = {};
+        // sending request
+        await Axios.post(
+            `${DATA.API}${this.api.register}`,
+            requestData
+        )
+            .then(Response => {
+                resp = Response.status;
+                data = Response.data;
+            })
+            .catch(err => {
+                console.error(err);
+
+                try {
+                    resp = err.response.status;
+                } catch (error) {
+                    //   network error
+                    resp = 600;
+                }
+            });
+
+        var returnObj = {
+            status: resp,
+            data: data
+        };
+        return returnObj;
+    }
+
+
+
+
+
+    // ------------------------------- Get all Admins ---------------------------------------
+    // ------------------------------- Get all Admins ---------------------------------------
+    // ------------------------------- Get all Admins ---------------------------------------
+    // ------------------------------- Get all Admins ---------------------------------------
+
+
+    getAllAdminDetails = async () => {
+        var resp = 600;
+        var data = {};
+        // var for store respose
+        var resp = 600;
+        var data = {};
+        // sending request
+        await Axios.get(
+            `${DATA.API}${this.api.getAllAdmins}`
+
+        )
+            .then(Response => {
+                resp = Response.status;
+                data = Response.data;
+            })
+            .catch(err => {
+                console.error(err);
+
+                try {
+                    resp = err.response.status;
+                } catch (error) {
+                    //   network error
+                    resp = 600;
+                }
+            });
+
+        var returnObj = {
+            status: resp,
+            data: data.result
+        };
+
+        
+        return returnObj;
+
+
+
+    }
+
+
     // ------------------------------- Set Cookeis ---------------------------------------
     // ------------------------------- Set Cookeis ---------------------------------------
     // ------------------------------- Set Cookeis ---------------------------------------
@@ -86,7 +178,7 @@ class Admin {
         if (
             Cookies.get("cSta") === false ||
             Cookies.get("cI") === undefined ||
-            Cookies.get("cE") === undefined ||Cookies.get("cSta") === undefined || Cookies.get("cSta") === null
+            Cookies.get("cE") === undefined || Cookies.get("cSta") === undefined || Cookies.get("cSta") === null
         ) {
             return false;
         } else {
