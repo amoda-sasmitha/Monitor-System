@@ -32,7 +32,7 @@ class Sidebar extends React.Component {
                                     Sensors</span>
                             </a>
                             <a className="sidebar-link waves-effect waves-dark sidebar-link" 
-                                href="/" aria-expanded="false">
+                                href="/admin" aria-expanded="false">
                                 <FontAwesomeIcon icon={faTachometerAlt} /> <span className="pl-2 hide-menu">
                                     Admins</span>
                             </a>
