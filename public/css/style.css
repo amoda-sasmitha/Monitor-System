@@ -12855,6 +12855,9 @@ Padding margin property
 /*******************
  Campaign
 *******************/
+.verticalLine {
+  border-right: 3px  solid rgb(224, 224, 224);
+}
 .campaign {
   position: relative;
   height: 350px; }

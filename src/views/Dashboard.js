@@ -27,14 +27,12 @@ class Dashboard extends React.Component {
     async componentDidMount() {
         var State = await A_Admin.checkSignedIn();
         if (State === false) {
-
             await window.location.replace("/");
-
         } else {
-         await   this.getDataFromApi();
-            this._interval = await setInterval(() => {
-                this.getDataFromApi();
-            }, 2000);
+        this.getDataFromApi();
+        this._interval = await setInterval(() => {
+            this.getDataFromApi();
+        }, 2000);
         }
     }
 
@@ -80,11 +78,11 @@ class Dashboard extends React.Component {
             <>
             <Topbar/>
             <Sidebar/>
-            <div className="page-wrapper pt-5">
+            <div className="page-wrapper pt-4">
                 <div className="page-breadcrumb">
                     <div className="row align-items-center">
                         <div className="col-12">
-                            <h4 className="page-title">Sensors Live Data</h4>
+                            <h4 className="page-title pt-4 pb-3 px-2">Sensors Live Data</h4>
                         </div>
                     </div>
 
@@ -109,7 +107,7 @@ class Dashboard extends React.Component {
                                     <div className="row">
                                         
                                         <div className="col-lg-12">
-                                            <div className="campaign ct-charts py-1">
+                                            <div className="campaign ct-charts px-3">
                                             <LineChart data={{
                                                 labels:labels ,
                                                 datasets:[
@@ -128,7 +126,7 @@ class Dashboard extends React.Component {
                                                 ]
                                             }}
                                             options={options}
-                                            width="600" height="250"/>
+                                            width="600" height="220"/>
                                             </div>
 
                                         </div>

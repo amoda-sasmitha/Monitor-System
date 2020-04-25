@@ -73,24 +73,17 @@ class Login extends Component {
     }
 
 
-
-
-
-
-
-
     // ---------------------------------------- render functions ----------------------------------------
     // ---------------------------------------- render functions ----------------------------------------
     // ---------------------------------------- render functions ----------------------------------------
     render() {
         return (
             <>
-                <Topbar />
-
-                <div className="container">
-                    <div className="row">
-                        <div className="col-sm-9 col-md-7 col-lg-5 mx-auto">
-                            <div className="card card-signin my-5">
+            <div className="wrapper hv-100 w-100 bg-darks" >
+                <div className="container bg-light vh-100">
+                    <div className="row mt-5">
+                        <div className="col-sm-8 col-md-5  mx-auto mt-5">
+                            <div className="card card-signin my-5  shadow">
                                 <div className="card-body">
                                     <h5 className="card-title text-center">Sign In</h5>
                                     <form className="form-signin" onSubmit={(e) => this.OnSignIn(e)}>
@@ -104,13 +97,14 @@ class Login extends Component {
                                             <input type="password" id="inputPassword" className="form-control" name="uPass" placeholder="Password" required onChange={(e) => this.onChangePassword(e)} />
                                         </div>
                                         <hr className="my-4"></hr>
-                                        <button className="btn btn-md btn-primary btn-block text-uppercase" type="submit">Sign in</button>
+                                        <button className="btn btn-md btn-secondary btn-block text-uppercase" type="submit">Sign in</button>
                                     </form>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+            </div>
             </>
         );
     }

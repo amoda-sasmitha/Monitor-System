@@ -2,33 +2,15 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import indexRoutes from './routes/index'
 import ProtectedindexRoutes from './routes/protected'
-
 import A_Admin from './Controllers/Admin'
 
-
-
-
-
-
-
 class App extends React.Component {
-
-
-
-
-
-
 
   render() {
     return (
       <>
         {A_Admin.checkSignedIn() == false ? <Router>
-
-
-          <Switch>
-
-
-
+         <Switch>
             {indexRoutes.map((prop, key) => {
               return (
                 <Route

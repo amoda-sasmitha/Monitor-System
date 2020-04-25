@@ -9,7 +9,7 @@ import Login from '../views/Admin/Login'
 let indexRoutes = [
   {
     path: "/*",
-    name: "SingleSensor",
+    name: "Login",
     component: Login,
   }
 ];
