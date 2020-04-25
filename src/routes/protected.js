@@ -4,6 +4,7 @@ import SingleSensor from '../views/SingleSensor';
 
 // import Login
 import Login from '../views/Admin/Login'
+import AdminVieww from '../views/Admin/AdminRegister'
 
 
 let ProtectedindexRoutes = [
@@ -17,6 +18,11 @@ let ProtectedindexRoutes = [
         path: "/sensor/:id",
         name: "SingleSensor",
         component: SingleSensor,
+    },
+    {
+        path: "/admin",
+        name: "AdminView",
+        component: AdminVieww,
     },
     {
         path: "/*",
