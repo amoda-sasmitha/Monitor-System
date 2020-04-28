@@ -30,9 +30,9 @@ class Dashboard extends React.Component {
             await window.location.replace("/");
         } else {
         this.getDataFromApi();
-        // this._interval = await setInterval(() => {
-        //     this.getDataFromApi();
-        // }, 2000);
+        this._interval = await setInterval(() => {
+            this.getDataFromApi();
+        }, 2000);
         }
     }
 

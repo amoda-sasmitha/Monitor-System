@@ -1,6 +1,7 @@
 
 import Dashboard from '../views/Dashboard';
 import SingleSensor from '../views/SingleSensor';
+import SensorData from '../views/SensorData';
 
 // import Login
 import Login from '../views/Admin/Login'
@@ -18,6 +19,12 @@ let ProtectedindexRoutes = [
         path: "/sensor/:id",
         name: "SingleSensor",
         component: SingleSensor,
+    },
+    {
+        path: "/sensordata",
+        name: "Sensor Data",
+        component: SensorData,
+        exact: true,
     },
     {
         path: "/admin",

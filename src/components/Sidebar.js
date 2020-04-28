@@ -1,6 +1,7 @@
 import React from 'react';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import { faTachometerAlt} from '@fortawesome/free-solid-svg-icons'
+import { Link } from "react-router-dom";
 
 class Sidebar extends React.Component {
     render(){
@@ -21,21 +22,27 @@ class Sidebar extends React.Component {
                             </div>
                         </li>
                         <li className="sidebar-item"> 
-                            <a className="sidebar-link waves-effect waves-dark sidebar-link" 
+                            <Link to="/">
+                            <div className="sidebar-link waves-effect waves-dark sidebar-link" 
                                 href="/" aria-expanded="false">
                                 <FontAwesomeIcon icon={faTachometerAlt} /> <span className="pl-2 hide-menu">
                                     Dashboard</span>
-                            </a>
-                            <a className="sidebar-link waves-effect waves-dark sidebar-link" 
+                            </div>
+                            </Link>
+                            <Link to="/sensordata">
+                            <div className="sidebar-link waves-effect waves-dark sidebar-link" 
                                 href="/" aria-expanded="false">
                                 <FontAwesomeIcon icon={faTachometerAlt} /> <span className="pl-2 hide-menu">
                                     Sensors</span>
-                            </a>
-                            <a className="sidebar-link waves-effect waves-dark sidebar-link" 
-                                href="/admin" aria-expanded="false">
+                            </div>
+                            </Link>
+                            <Link to="/admin">
+                            <div className="sidebar-link waves-effect waves-dark sidebar-link" 
+                                href="" aria-expanded="false">
                                 <FontAwesomeIcon icon={faTachometerAlt} /> <span className="pl-2 hide-menu">
                                     Admins</span>
-                            </a>
+                            </div>
+                            </Link>
                         </li>
                     </ul>      
                 </nav>
