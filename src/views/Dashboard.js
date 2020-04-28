@@ -2,7 +2,7 @@ import React from 'react';
 import Sidebar from '../components/Sidebar';
 import Topbar from '../components/Topbar';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCircle } from '@fortawesome/free-solid-svg-icons'
+import { faCircle , faExclamationCircle} from '@fortawesome/free-solid-svg-icons'
 import axios from 'axios';
 import { Line as LineChart } from 'react-chartjs-2';
 import DATA from '../util/env'
@@ -136,9 +136,15 @@ class Dashboard extends React.Component {
                             <div className="col-md-3">
                                 <div className="card  h-100 pb-3" style={{ backgroundColor: "transparent" }}>
                                     <div className="card-body bg-white">
-                                        <h4 className="card-title">Recent Alerts</h4>
+                                        <h4 className="card-title">Danger Alerts</h4>
                                         <div className="feed-widget">
                                             <ul className="list-style-none feed-body m-0 p-b-20">
+                                            <li class="feed-item">
+                                            <FontAwesomeIcon icon={faExclamationCircle} className="text-danger mr-2 mt-1 mb-auto"/>
+                                            <p> Sensor 4 smoke level increased to danger zone 
+                                                <span class="font-12 text-muted ml-2">Just Now</span>
+                                            </p>
+                                            </li>
                                             </ul>
                                         </div>
                                     </div>

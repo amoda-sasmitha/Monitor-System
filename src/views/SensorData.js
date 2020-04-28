@@ -71,12 +71,13 @@ class SensorData extends Component {
             toast("Sensor Successfully Updated");
             this.clearall();
             this.setState({ update_mode : false , selectedItem : {} })
+            this.getDataFromApi();
         })
         .catch( err => {
             console.log(err);
             toast("Somthing Wrong Happend");
         })
-        this.getDataFromApi();
+        
     }
 
     insertNewSensor = () => {
@@ -88,30 +89,30 @@ class SensorData extends Component {
         .then( result => {
             toast("Sensor Successfully Added");
             this.clearall();
+            this.getDataFromApi();
         })
         .catch( err => {
             console.log(err);
             toast("Somthing Wrong Happend");
         })
-        this.getDataFromApi();
+       
     }
 
-    // deleteSensor = () => {
-    //     const { selectedItem } = this.state;
-    //     axios.post(`${DATA.API}/sensors/insert` , {
-    //         floor_id : floor_id,
-    //         room_id : room_id,
-    //     })
-    //     .then( result => {
-    //         toast("Sensor Successfully Added");
-    //         this.clearall();
-    //     })
-    //     .catch( err => {
-    //         console.log(err);
-    //         toast("Somthing Wrong Happend");
-    //     })
-    //     this.getDataFromApi();
-    // }
+    deleteSensor = () => {
+        const { selectedItem } = this.state;
+        axios.delete(`${DATA.API}/sensors/delete/${selectedItem.id}`)
+        .then( result => {
+            toast("Sensor Successfully Deleted");
+            this.setState({delete_modal_visible : false , selectedItem : {} })
+            this.clearall();
+            this.getDataFromApi();
+        })
+        .catch( err => {
+            console.log(err);
+            toast("Somthing Wrong Happend");
+        })
+        
+    }
     
 
     render() {
