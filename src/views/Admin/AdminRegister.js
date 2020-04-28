@@ -236,7 +236,7 @@ class AdminRegister extends Component {
                                                     </div>
                                                     <div className="col-md-3 mt-2">
                                                         <br />
-                                                        <button className="btn btn-md btn-primary btn-block text-uppercase" type="submit">Register</button>
+                                                        <button className="btn btn-secondary btn-block text-uppercase" type="submit">Register</button>
                                                     </div>
                                                     <div className="col-md-12 mt-2">
                                                         <br />

@@ -30,9 +30,9 @@ class Dashboard extends React.Component {
             await window.location.replace("/");
         } else {
         this.getDataFromApi();
-        this._interval = await setInterval(() => {
-            this.getDataFromApi();
-        }, 2000);
+        // this._interval = await setInterval(() => {
+        //     this.getDataFromApi();
+        // }, 2000);
         }
     }
 
@@ -43,12 +43,12 @@ class Dashboard extends React.Component {
                 let labels = [];
                 let co2 = [];
                 let smoke = [];
-                console.log(result.data.log);
+                // console.log(result.data.log);
                 let dataarray = result.data.log;
                 if (dataarray.length > 10) {
                     dataarray = dataarray.slice(Math.max(dataarray.length - 10, 0))
                 }
-                console.log(dataarray.length);
+                // console.log(dataarray.length);
 
                 dataarray.forEach(item => {
                     labels.push(moment(item.datetime).format('HH:mm:ss'));
@@ -149,20 +149,11 @@ class Dashboard extends React.Component {
                             <div className="col-12">
                                 <div className="card">
                                     <div className="card-body pb-1">
-                                        <div className="d-md-flex align-items-center">
-                                            <div>
-                                                <h4 className="card-title">Sensor Details</h4>
-                                                <h5 className="card-subtitle">Update every 30s</h5>
-                                            </div>
-                                            <div className="ml-auto">
-                                                <div className="dl">
-                                                    <select className="custom-select">
-                                                        <option value="0" selected>Co2 Max to Min</option>
-                                                        <option value="0" selected>Co2 Max to Min</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
+                                    <div className="d-md-flex align-items-center">
+                                    <h4 className="card-title">Current Sensor Details  
+                                    <span className="card-subtitle small px-2">Update every 2s</span>
+                                    </h4> 
+                                </div>
                                     </div>
                                     <div className="table-responsive">
                                         <table className="table v-middle" id="td">
@@ -212,11 +203,11 @@ class Dashboard extends React.Component {
     }
 
     changeStyleColor = number => {
-        if (number >= 0 && number <= 4) {
+        if (number >= 0 && number <= 2) {
             return 'success';
-        } else if (number >= 5 && number <= 7) {
+        } else if (number >= 3 && number <= 4) {
             return 'warning';
-        } else if (number >= 8 && number <= 10) {
+        } else if (number >= 5 && number <= 10) {
             return 'danger';
         } else {
             return 'secondary';
@@ -224,11 +215,11 @@ class Dashboard extends React.Component {
     }
 
     changestatus = number => {
-        if (number >= 0 && number <= 4) {
+        if (number >= 0 && number <= 2) {
             return 'Normal';
-        } else if (number >= 5 && number <= 7) {
+        } else if (number >= 3 && number <= 4) {
             return 'Average';
-        } else if (number >= 8 && number <= 10) {
+        } else if (number >= 5 && number <= 10) {
             return 'Danger';
         } else {
             return 'None';

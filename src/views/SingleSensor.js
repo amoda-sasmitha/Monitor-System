@@ -322,11 +322,11 @@ class SingleSensor extends React.Component {
     }
 
     changeStyleColor = number => {
-        if (number >= 0 && number <= 4) {
+        if (number >= 0 && number <= 2) {
             return 'success';
-        } else if (number >= 5 && number <= 7) {
+        } else if (number >= 3 && number <= 4) {
             return 'warning';
-        } else if (number >= 8 && number <= 10) {
+        } else if (number >= 5 && number <= 10) {
             return 'danger';
         } else {
             return 'secondary';
@@ -334,11 +334,11 @@ class SingleSensor extends React.Component {
     }
 
     changestatus = number => {
-        if (number >= 0 && number <= 4) {
+        if (number >= 0 && number <= 2) {
             return 'Normal';
-        } else if (number >= 5 && number <= 7) {
+        } else if (number >= 3 && number <= 4) {
             return 'Average';
-        } else if (number >= 8 && number <= 10) {
+        } else if (number >= 5 && number <= 10) {
             return 'Danger';
         } else {
             return 'None';
