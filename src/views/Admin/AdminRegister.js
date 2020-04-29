@@ -165,9 +165,9 @@ class AdminRegister extends Component {
                     <td>{data.name}</td>
                     <td>{data.email}</td>
                     <td>{data.phone}</td>
-                    {/* <td>
+                    <td>
                         <button className="btn btn-sm btn-danger">Remove</button>
-                    </td> */}
+                    </td>
 
                 </tr>
                 );
@@ -270,7 +270,7 @@ class AdminRegister extends Component {
                                                         <th className="border-top-0">Name</th>
                                                         <th className="border-top-0">Email</th>
                                                         <th className="border-top-0">Contact No</th>
-                                                        {/* <th className="border-top-0">Actions</th> */}
+                                                        <th className="border-top-0">Actions</th>
                                                     </tr>
                                                 </thead >
                                                 <tbody >
