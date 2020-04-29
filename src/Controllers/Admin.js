@@ -11,7 +11,8 @@ class Admin {
             signin: "/users/login",
             register: "/users/register",
             getAllAdmins: "/users/a/all",
-            removeAdmin : "/users/a/r"
+            removeAdmin: "/users/a/r",
+            signOut: 'users/a/sign'
 
         };
     }
@@ -138,7 +139,7 @@ class Admin {
             data: data.result
         };
 
-        
+
         return returnObj;
 
 
@@ -152,12 +153,12 @@ class Admin {
 
 
 
-    async removeAdmin(admin){
+    async removeAdmin(admin) {
 
         console.log("Remove work");
         console.log(admin);
-        
-        if(admin != undefined || admin != null){
+
+        if (admin != undefined || admin != null) {
             var resp = 600;
             var data = {};
             // sending request
@@ -171,7 +172,7 @@ class Admin {
                 })
                 .catch(err => {
                     console.error(err);
-    
+
                     try {
                         resp = err.response.status;
                     } catch (error) {
@@ -179,7 +180,7 @@ class Admin {
                         resp = 600;
                     }
                 });
-    
+
             var returnObj = {
                 status: resp,
                 data: data
@@ -272,6 +273,21 @@ class Admin {
     // ======================================================= ================================================================================================================
     // ===============  get user details from cookies  end   here =============================================================================================================
     // ======================================================== ================================================================================================================
+
+
+
+    // ======================================================= ================================================================================================================
+    // ===============  Sign out                                   =============================================================================================================
+    // ======================================================== ================================================================================================================
+    async signOut() {
+
+        Cookies.remove("cSta");
+        Cookies.remove("cI");
+        Cookies.remove("cE");
+
+        window.location.replace("/");
+
+    }
 
 }
 

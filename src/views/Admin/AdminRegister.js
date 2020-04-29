@@ -224,7 +224,9 @@ class AdminRegister extends Component {
 
 
 
-
+    // userSignOut(){
+    //     var signOut = A_Admin.signOut();
+    // }
 
 
     // messages 
