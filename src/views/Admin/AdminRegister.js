@@ -7,6 +7,9 @@ import A_Admin from '../../Controllers/Admin'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
+import { Button, Modal } from 'react-bootstrap';
+
+import UniqId from 'uniqid'
 
 import './login.css'
 class AdminRegister extends Component {
@@ -21,6 +24,10 @@ class AdminRegister extends Component {
             uConPass: '',
             passwordMatch: true,
             allusers: [],
+            showModal: false,
+            deleteId: '',
+            deleteName: '',
+            deletepw: ''
         };
 
 
@@ -52,33 +59,33 @@ class AdminRegister extends Component {
         })
     }
 
-    onChangePassword(e) {
-        this.setState({
+    // onChangePassword(e) {
+    //     this.setState({
 
-            uPass: e.target.value
-        })
-    }
+    //         uPass: e.target.value
+    //     })
+    // }
 
 
-    onChangeConPassword(e) {
-        this.setState({
+    // onChangeConPassword(e) {
+    //     this.setState({
 
-            uConPass: e.target.value
-        }, () => this.checkPasswordMatch())
-    }
+    //         uConPass: e.target.value
+    //     }, () => this.checkPasswordMatch())
+    // }
 
     //password match
-    async  checkPasswordMatch() {
-        if (this.state.uPass != this.state.uConPass) {
-            await this.setState({
-                passwordMatch: false
-            })
-        } else {
-            await this.setState({
-                passwordMatch: true
-            })
-        }
-    }
+    // async  checkPasswordMatch() {
+    //     if (this.state.uPass != this.state.uConPass) {
+    //         await this.setState({
+    //             passwordMatch: false
+    //         })
+    //     } else {
+    //         await this.setState({
+    //             passwordMatch: true
+    //         })
+    //     }
+    // }
 
 
     clearall() {
@@ -94,39 +101,38 @@ class AdminRegister extends Component {
     //register admin
 
     async registerAdmin(e) {
-        e.preventDefault()
-        if (this.state.passwordMatch != false) {
+        // e.preventDefault()
 
 
-            const Admin = {
-                uName: this.state.uName,
-                uEmail: this.state.uEmail,
-                uCn: this.state.uCn,
-                uPass: this.state.uPass
-            }
-
-            console.log(Admin);
-
-            var addUser = await A_Admin.registerAdmin(Admin);
-
-            console.log(addUser);
-
-            switch (addUser.status) {
-                case 200:
-
-                    await this.getRegditedAdmins()
-                    await this.clearall()
-                    await this.notify()
-
-                    break;
-                case 201:
-                    console.log("Already you have user");
-
-                default:
-                    window.location.replace("/admin");
-            }
-
+        const Admin = {
+            uName: this.state.uName,
+            uEmail: this.state.uEmail,
+            uCn: this.state.uCn,
+            uPass: UniqId('ALS')
         }
+
+        console.log(Admin);
+
+        var addUser = await A_Admin.registerAdmin(Admin);
+
+        console.log(addUser);
+
+        switch (addUser.status) {
+            case 200:
+
+                await this.getRegditedAdmins()
+                await this.clearall()
+                await this.notify()
+
+                break;
+            case 201:
+                console.log("Already you have user");
+
+            default:
+                window.location.replace("/admin");
+        }
+
+
 
     }
 
@@ -150,10 +156,85 @@ class AdminRegister extends Component {
         }
     }
 
+
+
+
+    // modal-----------------
+
+    closeModal() {
+        this.setState({
+            showModal: false
+        })
+    }
+    async  showModal(id, name) {
+        await this.setState({
+            showModal: true,
+            deleteId: id,
+            deleteName: name
+
+        })
+
+    }
+
+    onChnageDeletePassword(e) {
+        this.setState({
+            deletepw: e.target.value
+        })
+    }
+
+    async onDelete(e) {
+        e.preventDefault()
+
+        var deleteAccount = {
+            id: this.state.deleteId,
+            password: this.state.deletepw
+        }
+
+        var deleteState = await A_Admin.removeAdmin(deleteAccount)
+        console.log(deleteState);
+
+        switch (deleteState.status) {
+            case 200:
+                var title = "Successfully Removed"
+                await this.setState({
+                    showModal: false
+                })
+                await this.notifyB(title)
+                await this.getRegditedAdmins()
+                break;
+            case 201:
+                var title = "Something went wrong"
+                await this.setState({
+                    showModal: false
+                })
+                await this.notifyB(title)
+                break;
+            default:
+                var title = "Something went wrong"
+                await this.setState({
+                    showModal: false
+                })
+                await this.notifyB(title)
+                await this.getRegditedAdmins()
+
+
+
+        }
+    }
+
+
+
+    // userSignOut(){
+    //     var signOut = A_Admin.signOut();
+    // }
+
+
     // messages 
     notify = () => toast("Successfully Added");
+    notifyB = (title) => toast(title);
 
     render() {
+
 
         if (this.state.allusers != null || this.state.allusers != undefined) {
 
@@ -165,9 +246,9 @@ class AdminRegister extends Component {
                     <td>{data.name}</td>
                     <td>{data.email}</td>
                     <td>{data.phone}</td>
-                    {/* <td>
-                        <button className="btn btn-sm btn-danger">Remove</button>
-                    </td> */}
+                    <td>
+                        <button className="btn btn-sm btn-danger" onClick={() => this.showModal(data.id, data.name)}>Remove</button>
+                    </td>
 
                 </tr>
                 );
@@ -225,15 +306,15 @@ class AdminRegister extends Component {
                                                     <div className="col-md-4">
                                                         <div className="form-label-group">
                                                             <label >Password : </label>
-                                                            <input type="password" className="form-control" name="uPass" placeholder="Password" required onChange={(e) => this.onChangePassword(e)} />
+                                                            <input type="password" className="form-control" name="uPass" placeholder="Password sent to your email" disabled />
                                                         </div>
                                                     </div>
-                                                    <div className="col-md-4">
+                                                    {/* <div className="col-md-4">
                                                         <div className="form-label-group">
                                                             <label >Confirm Password : </label>
                                                             <input type="password" className="form-control" name="uConPass" placeholder="Confirm Password" required onChange={(e) => this.onChangeConPassword(e)} />
                                                         </div>
-                                                    </div>
+                                                    </div> */}
                                                     <div className="col-md-3 mt-2">
                                                         <br />
                                                         <button className="btn btn-secondary btn-block text-uppercase" type="submit">Register</button>
@@ -270,7 +351,7 @@ class AdminRegister extends Component {
                                                         <th className="border-top-0">Name</th>
                                                         <th className="border-top-0">Email</th>
                                                         <th className="border-top-0">Contact No</th>
-                                                        {/* <th className="border-top-0">Actions</th> */}
+                                                        <th className="border-top-0">Actions</th>
                                                     </tr>
                                                 </thead >
                                                 <tbody >
@@ -283,6 +364,41 @@ class AdminRegister extends Component {
                             </div>
                         </div>
                     </div>
+
+
+                    {/* ========================================= */}
+                    {/* =================Delte Account ========== */}
+                    {/* ========================================= */}
+
+                    <Modal show={this.state.showModal} animation={false}>
+                        <Modal.Header >
+                            <Modal.Title>Delete Admin</Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body>Hey {this.state.deleteName}, <br /> Do you want to delete your account !</Modal.Body>
+                        <form onSubmit={(e) => this.onDelete(e)}>
+                            <div className="row m-2 p-2">
+                                <div className="col-md-4">
+                                    <div className="form-label-group">
+                                        <label >Password :  </label>
+                                    </div>
+                                </div>
+                                <div className="col-md-5">
+                                    <div className="form-label-group">
+                                        <input type="password" className="form-control" name="delPass" required autoFocus onChange={(e) => this.onChnageDeletePassword(e)} />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <Modal.Footer>
+                                <Button variant="secondary" onClick={() => this.closeModal()}>
+                                    Close
+                                 </Button>
+                                <Button variant="primary" type="submit" >
+                                    Save Changes
+                             </Button>
+                            </Modal.Footer>
+                        </form>
+                    </Modal>
                 </div>
 
             </>
