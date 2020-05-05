@@ -1,6 +1,6 @@
 import React from 'react';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
-import { faTachometerAlt} from '@fortawesome/free-solid-svg-icons'
+import { faTachometerAlt, faServer, faUser} from '@fortawesome/free-solid-svg-icons'
 import { Link } from "react-router-dom";
 
 class Sidebar extends React.Component {
@@ -32,14 +32,14 @@ class Sidebar extends React.Component {
                             <Link to="/sensordata">
                             <div className="sidebar-link waves-effect waves-dark sidebar-link" 
                                 href="/" aria-expanded="false">
-                                <FontAwesomeIcon icon={faTachometerAlt} /> <span className="pl-2 hide-menu">
+                                <FontAwesomeIcon icon={faServer} /> <span className="pl-2 hide-menu">
                                     Sensors</span>
                             </div>
                             </Link>
                             <Link to="/admin">
                             <div className="sidebar-link waves-effect waves-dark sidebar-link" 
                                 href="" aria-expanded="false">
-                                <FontAwesomeIcon icon={faTachometerAlt} /> <span className="pl-2 hide-menu">
+                                <FontAwesomeIcon icon={faUser} /> <span className="pl-2 hide-menu">
                                     Admins</span>
                             </div>
                             </Link>

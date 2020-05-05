@@ -21,6 +21,7 @@ class Dashboard extends React.Component {
             labels: [],
             co2: [],
             smoke: [],
+            alerts : [],
         }
     }
 
@@ -37,6 +38,7 @@ class Dashboard extends React.Component {
     }
 
     getDataFromApi = () => {
+        let { alerts } = this.state;
         axios.get(`${DATA.API}/sensors/getall/2`)
             .then(result => {
 
@@ -56,11 +58,23 @@ class Dashboard extends React.Component {
                     smoke.push(item.average_smoke);
                 })
 
+                result.data.current.forEach( sensor => {
+                    if(sensor.co2_level > 5 || sensor.smoke_level > 5){
+                        if(alerts.length > 5){
+                            alerts.unshift(sensor)
+                            alerts.pop();
+                        }else{
+                            alerts.unshift(sensor)
+                        }
+                    }
+                })
+
                 this.setState({
                     sensors: result.data.current,
                     labels: labels,
                     co2: co2,
-                    smoke: smoke
+                    smoke: smoke,
+                    alerts : alerts
                 });
             })
             .catch(err => {
@@ -73,7 +87,7 @@ class Dashboard extends React.Component {
     }
 
     render() {
-        const { sensors, labels, co2, smoke } = this.state;
+        const { sensors, labels, co2, smoke , alerts } = this.state;
         return (
             <>
             <Topbar/>
@@ -139,12 +153,25 @@ class Dashboard extends React.Component {
                                         <h4 className="card-title">Danger Alerts</h4>
                                         <div className="feed-widget">
                                             <ul className="list-style-none feed-body m-0 p-b-20">
-                                            <li class="feed-item">
-                                            <FontAwesomeIcon icon={faExclamationCircle} className="text-danger mr-2 mt-1 mb-auto"/>
-                                            <p> Sensor 4 smoke level increased to danger zone 
-                                                <span class="font-12 text-muted ml-2">Just Now</span>
-                                            </p>
-                                            </li>
+                                                {
+                                                    alerts.map( a => {
+                                                        return(
+                                                            <li class="feed-item">
+                                                            <FontAwesomeIcon icon={faExclamationCircle} className="text-danger mr-2 mt-1 mb-auto"/>
+                                                            <p> Sensor {a.id} smoke and co2 levels increased to danger zone 
+                                                        <span class="font-12 text-muted ml-2">{moment(a.updated_at).format("HH:mm:ss")}</span>
+                                                            </p>
+                                                            </li>
+                                                        )
+                                                    })
+                                                }
+                                                {
+                                                    alerts.length == 0 && 
+                                                    <li class="feed-item">
+                                                            <FontAwesomeIcon icon={faCircle} className="text-success mr-2 mt-1 mb-auto"/>
+                                                            <p>No Danger Alerts Found</p>
+                                                            </li>
+                                                }
                                             </ul>
                                         </div>
                                     </div>

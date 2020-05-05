@@ -61,7 +61,7 @@ class SensorData extends Component {
 
     updateSensorData = () => {
         const { floor_id , room_id , id } = this.state;
-        axios.patch(`${DATA.API}/sensors/update` , {
+        axios.post(`${DATA.API}/sensors/update` , {
             id : id,
             floor_id : floor_id,
             room_id : room_id,
@@ -100,7 +100,7 @@ class SensorData extends Component {
 
     deleteSensor = () => {
         const { selectedItem } = this.state;
-        axios.delete(`${DATA.API}/sensors/delete/${selectedItem.id}`)
+        axios.post(`${DATA.API}/sensors/delete/${selectedItem.id}`)
         .then( result => {
             toast("Sensor Successfully Deleted");
             this.setState({delete_modal_visible : false , selectedItem : {} })

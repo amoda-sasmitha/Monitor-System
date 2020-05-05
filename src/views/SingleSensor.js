@@ -34,7 +34,6 @@ class SingleSensor extends React.Component {
           }, 4000);
         
     }
-
     getDataFromApi = id => {
     axios.get(`${DATA.API}/sensors/getall/${id}/20`)
             .then( result => {
