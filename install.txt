@@ -1,0 +1,4 @@
+Run Web-Client (React Application)
+    * Clone the github repository
+    * In root folder run command “npm install” ( install node modules)
+    * Run development server using command “npm start”
